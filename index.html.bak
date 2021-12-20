@@ -294,7 +294,7 @@
 				backPicDom.textContent="";
 				randInt =  Math.floor(Math.random()*11) ;
 				backPicDom.appendChild(myImages[randInt]);
-				helpDom.textContent="提示：你选择了‘写一写’模式，选择单词正确的意思进行学习巩固吧，点击下一个继续……" ;
+				helpDom.textContent="提示：你选择了‘写一写’模式，请写出单词正确的意思进行学习巩固吧，点击下一个继续……" ;
 				show1.style.display = "none";
 				show2.style.display = "none";
 				show3.style.display = "none";
