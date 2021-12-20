@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>English learning app</title>
+  <style type="text/css">
+	body{
+		margin:0;}
+	p#text{
+		text-indent:2em;
+		color:white;}
+	h1{
+		margin:0;
+		height:200px;
+		background:url("img/header.jpg") no-repeat center;
+		text-align:center;
+		color:white;}
+	article{
+		margin:0;
+		font-size:1.5em;
+		position:relative;
+	    background-color:rgb(220,150,100);
+		overflow-x:hidden;
+	    overflow-y:auto;}
+@media screen and (min-width:600px){
+	section{
+		display:flex;
+		background-color:rgb(220,150,100);}
+	article{
+		flex:1;}
+	article#help div#backPic{
+		position:absolute;
+		/z-index: 1;
+		background-color:rgb(180,80,60);
+		padding:0.1em;}
+	article#help p#text{
+		position:absolute;
+		color:white;
+		font-size:1.3em;
+		text-indent:2em;
+		left:0.2em;
+		top:20%;
+		text-shadow:blue 2px 1px ;
+		z-index: 2 ;
+		padding:1%;}
+	article#words{
+		flex:2;
+		line-height:1.8em;
+		text-align:center;}
+	div#choosePlay input{
+		font-size:1em;}
+}
+
+@media screen and (max-width:600px){
+	header{
+		line-height:5em;}
+	section{
+		background-color:rgb(220,150,100);
+	}
+	article#help{
+		height:20%;
+		background-color:rgb(180,80,60);
+		padding:0.2em;}
+	article#help div#backPic{
+		width:100%;}
+	article#help p#text{
+		position:absolute;
+		color:white;
+		text-shadow:blue 2px 1px ;
+		font-size:1em;
+		text-indent:2em;
+		left:0.5em;
+		z-index: 2em;}
+	article#words{
+		line-height:1.8em;
+		font-size:2em;
+		text-align:center;}
+	div#choosePlay input{
+		font-size:0.8em;}
+}
+
+	p#English1{color:rgb(80,150,70);text-shadow:blue 1px 1px;}
+	p#Read1{color:rgb(80,70,200);}
+	p#Chinese1{color:rgb(150,20,30);}
+	input#search{color:rgb(80,150,70);font-size:0.7em;}
+	p#Read2{color:rgb(80,70,200);}
+	p#Chinese2{color:rgb(150,20,30);}
+	input#search1{color:rgb(80,150,70);font-size:0.7em;}
+	p#Read4{color:rgb(80,70,200);}
+	p#Chinese4{color:rgb(150,20,30);}
+
+	div#popwindow{
+		text-indent:2em;
+		text-shadow:white 2px 1px;}
+	span{
+		border:2px outset;
+		margin:0.5em;
+		font-size:0.8em;
+		background-color:rgb(50,0,170);
+		color:white;
+		padding:0.2em;
+		border-radius:3.5em;
+		cursor:pointer;}
+	span:hover{
+		background-color:green;
+		border:2px inset;
+		color:yellow;}
+	footer{
+		background-color:rgb(200,120,100);
+		color:white;
+		font-size:1.2em;
+		text-align:center;
+		height:35px;
+		padding-top:15px;}
+	div#choosePlay input{
+		width:100%;
+		background-color:rgb(220,150,100);
+		border:0;
+		cursor:pointer;}
+	input:hover{
+		color:rgb(200,100,100);}
+	p#English3{
+		color:rgb(160,30,30);}
+	
+  </style>
+
+  <script src="words.js">
+ <!--
+	/*背单词系统，数据在网上找“http://lijianhong.top/words.js”
+ "http://developer.mozilla.org"*/
+  //var s = arr[1000];
+  //var arr = s.split("/");
+ //-->
+ </script>
+ <script src="proverb.js">
+ <!--
+ //-->
+ </script>
+ <script type="text/javascript">
+ <!--
+    var Model = {
+		learnWords : [] , //学习单词的id组成的数组
+		learnId : 0 ,
+    }; 
+	//随机选择十个单词组成一个数组
+	for (var i=0; i < 10 ; i++){
+  	    var randInt = Math.floor(Math.random()*en6.length) ;
+        Model.learnWords.push(randInt);
+    }
+ window.onload = function(){
+	 //屏幕分辨率
+	var fontSize =  Math.floor(window.innerWidth/100) ;
+	switch (fontSize){
+		case 17 :	 case 16 :	 case 15 : 
+		case 14 :	 case 13 : 	 case 12 :
+		case 11 : fontSize =  fontSize*1.5 ; break;
+		case 10 : 
+		case 9 :  fontSize =  fontSize*1.8 ; break;
+		case 8 :  
+		case 7 :  fontSize =  fontSize*2 ; break;
+		case 6 :  
+		case 5 :  fontSize =  fontSize*2.5 ; break;
+		case 4 : 
+		case 3 : fontSize =  fontSize*3.5 ; break;
+		default: fontSize =  fontSize*2.7; 
+	}
+	document.body.style.fontSize = fontSize + "px" ;
+   
+    var sectionHeight =  window.innerHeight - 150 - 50 - 50 ;
+    document.querySelector("section").style.height = sectionHeight + "px";
+
+	//section-help:随机生成图片
+	var myImages = [] ;//图像对象 组成的 数组
+    for(var i=0; i<11; i++ ){
+	    var img = new Image();
+	    img.src = "img/" + i + ".jpg" ;
+	    //img.style.opacity = "0.5" ;
+	    myImages.push(img) ;
+    }
+    Model.myImages = myImages ;//把图片集传给Model对象，提供使用
+	var backPicDom =  my$("article#help div#backPic") ;
+	var randInt =  Math.floor(Math.random()*11) ;
+	backPicDom.appendChild(myImages[randInt]);
+
+	//开篇内容
+	//var showDom = my$("article#words");
+	//showDom.textContent = "欢迎来到你的英语学习界面";
+
+	//获取页面内容调用函数
+	function my$(para){
+		if(!para){
+			throw para + " : wrong Selector para,you get nothing !" ;
+		}
+		var dom = document.querySelectorAll(para) ;
+		if(dom.length > 1){
+			console.log("you get Dom Array list reference.");
+			return dom ;
+		}else{
+			dom = document.querySelector(para) ;
+			if (dom){
+				console.log("you get a Dom reference.");
+				return dom ;
+			}else{
+				throw para + " : wrong Selector para,you get nothing !" ;
+			}
+		}
+	}
+
+	var arr = ["记一记","搜一搜","选一选","写一写"];
+	var spanDom = document.querySelector("span");
+	var pDom = document.querySelector("p#pattern");//随机生成按钮
+	var helpDom = document.querySelector("p#text");//帮助信息
+	var popwindow = document.querySelector("div#popwindow");
+	var show1 = document.querySelector("div#page1");
+	var show2 = document.querySelector("div#page2");
+	var show3 = document.querySelector("div#page3");
+	var show4 = document.querySelector("div#page4");
+	var choose1=0,choose2=0,choose3=0,choose4=0; 
+    show1.style.display = "none";
+	show2.style.display = "none";
+	show3.style.display = "none";
+	show4.style.display = "none";
+
+	var num = Math.floor(Math.random()*4);
+	popwindow.textContent = proverb[num];
+	
+	for(var i=0;i<arr.length;i++){
+		spanDom = document.createElement("span");
+		spanDom.textContent = arr[i];
+		spanDom.onmouseover = function(){
+			this.className = "onmouseover";
+		}
+		spanDom.onmouseout = function(){
+			this.className = " ";
+		}
+		spanDom.onclick = function(){
+			this.className = "onclick";
+		}
+		pDom.appendChild(spanDom);
+
+		//记一记
+		if(i === 0){
+			choose1 = 1;
+			spanDom.onclick = function(){
+				backPicDom.textContent="";
+				randInt =  Math.floor(Math.random()*11) ;
+				backPicDom.appendChild(myImages[randInt]);
+				helpDom.textContent="提示：你选择了‘记一记’模式，已经为您选择10个单词，点击单词区下一个按钮继续……" ;
+				show1.style.display = "block";
+				show2.style.display = "none";
+				show3.style.display = "none";
+				show4.style.display = "none";
+				popwindow.style.display = "none";
+			}
+			continue;
+		}
+		//搜一搜
+		if(i === 1){
+			choose2 = 2;
+			spanDom.onclick = function(){
+				backPicDom.textContent="";
+				randInt =  Math.floor(Math.random()*11) ;
+				backPicDom.appendChild(myImages[randInt]);
+				helpDom.textContent="提示：你选择了‘搜一搜’模式，你可以在输入框中输入你想查询的单词，点击确定按钮搜索……" ;
+				show1.style.display = "none";
+				show2.style.display = "block";
+				show3.style.display = "none";
+				show4.style.display = "none";
+				popwindow.style.display = "none";
+			}
+			continue;
+		}
+		//选一选
+		if(i === 2){
+			choose3 = 3;
+			spanDom.onclick = function(){
+				backPicDom.textContent="";
+				randInt =  Math.floor(Math.random()*11) ;
+				backPicDom.appendChild(myImages[randInt]);
+				helpDom.textContent="提示：你选择了‘选一选’模式，选择单词正确的意思进行学习巩固吧，点击下一个继续……" ;
+				show1.style.display = "none";
+				show2.style.display = "none";
+				show3.style.display = "block";
+				show4.style.display = "none";
+				popwindow.style.display = "none";
+			}
+			continue;
+		}
+		//写一写
+		if(i === 3){
+			choose4 = 4;
+			spanDom.onclick = function(){
+				backPicDom.textContent="";
+				randInt =  Math.floor(Math.random()*11) ;
+				backPicDom.appendChild(myImages[randInt]);
+				helpDom.textContent="提示：你选择了‘写一写’模式，选择单词正确的意思进行学习巩固吧，点击下一个继续……" ;
+				show1.style.display = "none";
+				show2.style.display = "none";
+				show3.style.display = "none";
+				show4.style.display = "block";
+				popwindow.style.display = "none";
+			}
+			continue;
+		}
+	}
+
+	//记一记
+	var engDom1 = my$("div#page1 p#English1");
+	var readDom1 = my$("div#page1 p#Read1");
+	var chiDom1 = my$("div#page1 p#Chinese1");
+	var nextDom = my$("div#page1 input#next");;
+	if(choose1 === 1){
+		nextDom.onclick = function(){
+  			var learn = Model.learnWords ;
+  			var id = learn[Model.learnId] ;
+  			//console.log("en6:" + id);
+  			my$("article#words p#nowWord").textContent = "NO. " + (Model.learnId+1) + " / " + "单词 ID : "+ id ;
+			var arr = en6[id].split("/");
+			engDom1.textContent = arr[0];
+			readDom1.textContent = "【 "+arr[1]+" 】";;
+			chiDom1.textContent = arr[2];
+  			if (Model.learnId + 1 === learn.length){
+  				Model.learnId  = 0 ;
+  			}else{
+  				Model.learnId ++ ;
+  			}
+  		}
+	}
+
+	//搜一搜
+	var searchDom = document.querySelector("input#search");
+	var yesDom = document.querySelector("input#yes");
+	var readDom2 = document.querySelector("p#Read2");
+	var chiDom2 = document.querySelector("p#Chinese2");
+	if(choose2 ===2){
+		yesDom.onclick = function(){
+			for(var i=0;i<en6.length;i++){
+				var s = en6[i];
+				var arr = s.split("/");
+				if(searchDom.value === arr[0]){
+					readDom2.textContent = "【"+arr[1]+"】";
+					chiDom2.textContent = arr[2];
+				}
+			}
+		}
+	}
+
+	//选一选
+	var engDom3 = my$("div#page3 p#English3");
+	var next = my$("div#page3 input#nextOne");
+	var a=document.querySelector("input#a");
+    var b=document.querySelector("input#b");
+    var c=document.querySelector("input#c");
+    var d=document.querySelector("input#d");
+	var T="✅";
+	var F="❌";
+	if(choose3 ===3){
+		engDom3.textContent ="点击下一题开始学习巩固吧：";
+		next.onclick = function(){
+			var learn = Model.learnWords ;
+  			var id = learn[Model.learnId] ;
+			arr1 = en6[id].split("/");
+			engDom3.textContent ="请选择正确的意思："+ arr1[0];
+			arr2 = en6[Math.floor(Math.random()*en6.length)].split("/");
+			arr3 = en6[Math.floor(Math.random()*en6.length)].split("/");
+			arr4 = en6[Math.floor(Math.random()*en6.length)].split("/");
+			arr5 = en6[Math.floor(Math.random()*en6.length)].split("/");
+			a.value ="A."+ arr2[2];
+			b.value ="B."+ arr3[2];
+			c.value ="C."+ arr4[2];
+			d.value ="D."+ arr5[2];
+			op=(Math.floor(Math.random()*10))%4;
+			switch(op){
+				case 0:
+					a.value="A."+arr1[2];
+					break;
+				case 1:
+					b.value="B."+arr1[2];
+					break;
+				case 2:
+					c.value="C."+arr1[2];
+					break;
+				case 3:
+					d.value="D."+arr1[2];
+					break;
+			}
+			a.onclick=doMath;
+			b.onclick=doMath;
+			c.onclick=doMath;
+			d.onclick=doMath;
+			function doMath(){
+				var r = this.value;
+				if(r==="A."+arr1[2] || r==="B."+arr1[2] || r==="C."+arr1[2] || r==="D."+arr1[2]){
+					this.value = this.value + T;
+				}else{
+					this.value = this.value + F;
+				}
+			}
+			if (Model.learnId + 1 === learn.length){
+  				Model.learnId  = 0 ;
+  			}else{
+  				Model.learnId ++ ;
+  			}
+		}
+	}
+
+	//写一写
+	var searchDom1 = document.querySelector("input#search1");
+	var yesDom1 = document.querySelector("input#yesOne");
+	var readDom4 = document.querySelector("p#Read4");
+	var chiDom4 = document.querySelector("p#Chinese4");
+	var nextTwo = my$("div#page4 input#nextTwo");
+	var wordTitle = my$("div#page4 p#wordTitle");
+	if(choose4 === 4){
+		var learn = Model.learnWords ;
+  		var id = learn[Model.learnId+1] ;
+		var arr = en6[id].split("/");
+		readDom4.textContent = "【 "+arr[1]+" 】";
+		chiDom4.textContent = arr[2];
+		nextTwo.onclick = function(){
+			wordTitle.textContent = "请输入英文单词";
+			searchDom1.value = "";
+			learn = Model.learnWords ;
+			id = learn[Model.learnId] ;
+			arr = en6[id].split("/");
+			readDom4.textContent = "【 "+arr[1]+" 】";
+			chiDom4.textContent = arr[2];
+  			if (Model.learnId + 1 === learn.length){
+  				Model.learnId  = 0 ;
+  			}else{
+  				Model.learnId ++ ;
+  			}
+		}
+		yesDom1.onclick = function(){
+			if(searchDom1.value === arr[0]){
+				wordTitle.textContent = "你写的是对的！";
+			}else{
+				wordTitle.textContent = "你写的是错的！正确："+arr[0];
+			}
+		}
+	}
+
+	var myDate = new Date();
+    my$("footer").textContent += myDate.getFullYear() +'年' + (myDate.getMonth()+1) +'月' + myDate.getDate() +'日'; 
+ };
+ //-->
+ </script>
+ </head>
+ <body>
+  <header>
+   <h1 id="Title">Learning For Your Future.
+    <p id="pattern"></p>
+   </h1>
+  </header>
+
+  <section>
+    <article id="help">
+     <p id="text">
+	   提示："Please select the button above to enter the corresponding mode",请选择上面状态按钮，进入相应学习单词的模式。
+	 </p>
+	 <div id="backPic" class="">
+	 </div>
+    </article>
+    <article id="words">
+	 <div id="page1" class="记一记">
+	  <p id ="nowWord" class="当前单词">当前单词</p>
+	  <p id="English1" class="单词">单词</p>
+	  <p id="Read1" class="音标">音标</p>
+	  <p id="Chinese1" class="中文">中文</p>
+      <input type="button" value="下一个" id="next">
+	 </div>
+	 <div id="page2" class="搜一搜">
+	  <p>请输入你要搜索的单词：</p>
+	  <input type="text" value="" id="search">
+	  <input type="button" value="确定" id="yes">
+	  <p id="Read2" class="音标">音标</p>
+	  <p id="Chinese2" class="中文">中文</p>
+	 </div>
+	 <div id="page3" class="选一选">
+	  <div id="choosePlay" class="">
+		<p id="English3" class="单词"></p>
+	    <input type="button" id="a">
+	    <input type="button" id="b">
+        <input type="button" id="c">
+        <input type="button" id="d">
+	  </div>
+	  <input type="button" value="下一题" id="nextOne">
+	 </div>
+	 <div id="page4" class="写一写">
+	  <p id="wordTitle">请输入英文单词：</p>
+	  <input type="text" value="" id="search1">
+	  <input type="button" value="确定" id="yesOne">
+	  <input type="button" value="下一个" id="nextTwo">
+	  <p id="Read4" class="音标"></p>
+	  <p id="Chinese4" class="中文"></p>
+	 </div>
+	 <div id="popwindow" class="">
+	 </div>
+    </article>
+</section>
+
+<footer>
+	Code By 李明晶 of 19Java一班 on 
+</footer>
+ </body>
+</html>
